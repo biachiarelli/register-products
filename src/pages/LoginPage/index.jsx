@@ -17,8 +17,6 @@ export default function LoginPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Email:', email);
-    console.log('Password:', password);
 
     api
       .get(`/user?search=${email}`)
