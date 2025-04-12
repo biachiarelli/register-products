@@ -1,26 +1,29 @@
+// .eslintrc.cjs
 module.exports = {
-  env: {
-    browser: true,
-    es2021: true,
-  },
-  extends: [
-    'eslint:recommended',
-    'plugin:react/recommended',
-    'plugin:prettier/recommended',
-  ],
-  plugins: ['react', 'prettier'],
+  root: true,
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true,
+    },
   },
-  rules: {
-    'prettier/prettier': 'error',
-    'react/react-in-jsx-scope': 'off',
-    'react/prop-types': 'warn',
-  },
+  plugins: ['@typescript-eslint', 'react', 'react-hooks', 'prettier'],
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
+    'prettier',
+  ],
   settings: {
     react: {
       version: 'detect',
     },
+  },
+  rules: {
+    'prettier/prettier': 'error',
+    'react/react-in-jsx-scope': 'off', 
   },
 };

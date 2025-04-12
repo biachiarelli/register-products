@@ -1,7 +1,7 @@
 import './index.scss';
 import Image from '../../assets/images/illustration-register.png';
 import { Alert, Button, Snackbar, TextField } from '@mui/material';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import api from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,12 +15,12 @@ export default function LoginPage() {
     message: '',
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     api
       .get(`/user?search=${email}`)
-      .then((res) => {
+      .then((res: any) => {
         console.log(res);
 
         if (res.data[0]) {
