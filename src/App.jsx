@@ -1,20 +1,45 @@
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import FormProduct from './pages/FormProduct';
-import Products from './pages/Register';
-import Register from './pages/Products';
-import Login from './pages/Login';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import Login from './pages/LoginPage';
+import ProtectedRoute from './components/ProtectedRoute';
+import ProductListPage from './pages/ProductListPage';
+import ProductDetailsPage from './pages/ProductDetailsPage';
+import ProductFormPage from './pages/ProductFormPage';
+import RegisterPage from './pages/RegisterPage';
 
 export default function App() {
   return (
     <BrowserRouter>
-    <Routes>
-    <Route path="/" element={<Login />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/products" element={<Products />} />
-      <Route path="/products/create" element={<FormProduct />} />
-      <Route path="*" element={<h1>404 - Página não encontrada</h1>} />
-    </Routes>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/register" element={<RegisterPage />} />
+
+        {/* Protected Pages */}
+        <Route
+          path="/products"
+          element={
+            <ProtectedRoute>
+              <ProductListPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/form-product"
+          element={
+            <ProtectedRoute>
+              <ProductFormPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/product/:id"
+          element={
+            <ProtectedRoute>
+              <ProductDetailsPage />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
     </BrowserRouter>
   );
 }
