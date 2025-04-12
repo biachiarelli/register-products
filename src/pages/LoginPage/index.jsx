@@ -1,6 +1,6 @@
 import './index.scss';
 import Image from '../../assets/images/illustration-register.png';
-import { Button, TextField } from '@mui/material';
+import { Alert, Button, Snackbar, TextField } from '@mui/material';
 import { useState } from 'react';
 import api from '../../services/api';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +9,11 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    type: '',
+    message: '',
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -26,19 +31,47 @@ export default function LoginPage() {
             localStorage.setItem('token', user.token);
             navigate('/products');
           } else {
-            console.log('senha errada');
+            setSnackbar({
+              open: true,
+              type: 'error',
+              message: 'Senha incorreta',
+            });
           }
         } else {
-          console.log('usuario nao cadastrado');
+          setSnackbar({
+            open: true,
+            type: 'error',
+            message: 'Usuário não cadastrado',
+          });
         }
       })
-      .catch((err) => {
-        console.error(err);
+      .catch(() => {
+        setSnackbar({
+          open: true,
+          type: 'error',
+          message: 'Credenciais inválidas',
+        });
       });
   };
 
   return (
     <div className="login">
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+      >
+        <Alert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.type}
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
+
       <div className="login-content">
         <img className="login-image" src={Image} />
         <form className="login-form" onSubmit={handleSubmit}>
