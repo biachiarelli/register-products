@@ -23,8 +23,6 @@ export default function LoginPage() {
     api
       .get<unknown, AxiosResponse<User[]>>(`/user?search=${email}`)
       .then((res) => {
-        console.log(res);
-
         if (res.data[0]) {
           const user = res.data[0];
           if (user.senha === password) {
