@@ -1,5 +1,36 @@
 @import '../../assets/styles/global';
 
 .sidebar {
-    
-}
+    height: 100%;
+    padding: 24px;
+
+    &-logo {
+        width: 100%;
+    }
+  
+    ul {
+      list-style: none;
+      padding: 0;
+  
+      li {
+        margin: 24px 0;
+  
+        a {
+          color: $gray-600;
+          text-decoration: none;
+          font-weight: 500;
+          transition: color 0.2s;
+  
+          &:hover {
+            color: $secondary-color;
+          }
+        }
+          
+        &.active a {
+            color: $primary-color;
+            font-weight: bold;
+        }
+      }
+    }
+  }
+  

@@ -8,6 +8,7 @@ import { ptBR } from 'date-fns/locale';
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import api from '../../services/api';
+import { useNavigate } from 'react-router-dom';
 
 const validationSchemaPersonalData = Yup.object({
   nome: Yup.string().required('Nome é obrigatório'),
@@ -29,6 +30,7 @@ const validationSchemaAddressData = Yup.object({
 });
 
 export default function RegisterPage() {
+  const navigate = useNavigate();
   const steps = ['Dados Pessoais', 'Endereço'];
   const [activeStep, setActiveStep] = useState(0);
   const [addressData, setAddressData] = useState({
@@ -46,6 +48,9 @@ export default function RegisterPage() {
   };
 
   const handleBack = () => {
+    if(activeStep === 0) {
+      navigate('/')
+    }
     setActiveStep((prevStep) => prevStep - 1);
   };
 
@@ -247,11 +252,10 @@ export default function RegisterPage() {
                       </>
                     )}
 
-                  <div class="register-form__buttons">
+                  <div className="register-form__buttons">
                     <Button
                       variant="contained"
                       onClick={handleBack}
-                      disabled={activeStep === 0}
                     >
                       Voltar
                     </Button>

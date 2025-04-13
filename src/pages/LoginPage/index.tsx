@@ -1,5 +1,5 @@
 import './index.scss';
-import Image from '../../assets/images/illustration-register.png';
+import Image from '../../assets/images/illustration-login.png';
 import { Alert, AlertColor, Button, Snackbar, TextField } from '@mui/material';
 import { FormEvent, useState } from 'react';
 import api from '../../services/api';
