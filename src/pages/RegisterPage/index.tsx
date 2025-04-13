@@ -3,11 +3,10 @@ import Image from '../../assets/images/illustration-register.png';
 import SuccessImage from '../../assets/images/illustration-register-success.png';
 import { useState } from 'react';
 import { Alert, AlertColor, Button, FormControl, IconButton, InputLabel, MenuItem, Select, Snackbar, Step, StepLabel, Stepper, TextField } from '@mui/material';
-import { Formik, Field, Form, FieldProps } from 'formik';
+import { Formik, Field, Form } from 'formik';
 import api from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import InputMask from 'react-input-mask';
 
 
 export default function RegisterPage() {
@@ -194,24 +193,7 @@ export default function RegisterPage() {
                           name="cpf"
                           label="CPF"
                           fullWidth
-                          component={({ field, form, ...props }: FieldProps) => (
-                            <InputMask
-                            mask="999.999.999-99"
-                            value={field.value}
-                            onChange={field.onChange}
-                            onBlur={field.onBlur}  
-                          >
-                            {(inputProps: any) => (
-                              <TextField
-                                {...field}
-                                {...props}
-                                {...inputProps}
-                                margin="normal"
-                                required
-                              />
-                            )}
-                          </InputMask>
-                          )}
+                          component={TextField}
                           margin="normal"
                           required
                         />
