@@ -1,33 +1,29 @@
 @import '../../assets/styles/global';
 
 .product-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  &-header {
     display: flex;
-    flex-direction: column;
-    gap: 24px;
+    gap: 8px;
+    align-items: center;
 
-    &-header {
-        display: flex;
-        gap: 8px;
-        align-items: center;
-
-        &__title {
-            font-weight: 700;
-            color: $primary-color;
-        }
-
+    &__title {
+      font-weight: 700;
+      color: $primary-color;
     }
+  }
 
-    &-content {
-        max-width: 800px;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        column-gap: 24px;
+  &-content {
+    max-width: 800px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 24px;
 
-        @include max-md {
-            grid-template-columns: 1fr;
-
-        }
-
+    @include max-md {
+      grid-template-columns: 1fr;
     }
-    
+  }
 }

@@ -23,13 +23,13 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  
   useEffect(() => {
     setIsLoading(true);
     const token = localStorage.getItem('token');
 
     if (token && !user) {
-      api.get<User[]>('/user')
+      api
+        .get<User[]>('/user')
         .then((res) => {
           const found = res.data.find((u) => u.token === token);
           if (found) {
@@ -42,7 +42,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     } else {
       setIsLoading(false);
     }
-  }, []);
+  }, [user]);
 
   const logout = () => {
     localStorage.removeItem('token');
@@ -50,10 +50,12 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <UserContext.Provider value={{ user, setUser, logout, isLoading, setIsLoading }}>
-    {isLoading ? (
+    <UserContext.Provider
+      value={{ user, setUser, logout, isLoading, setIsLoading }}
+    >
+      {isLoading ? (
         <div
-            style={{
+          style={{
             position: 'fixed',
             top: 0,
             left: 0,
@@ -64,14 +66,14 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
             justifyContent: 'center',
             alignItems: 'center',
             zIndex: 9999,
-            }}
+          }}
         >
-            <CircularProgress style={{ color: 'white' }} />
+          <CircularProgress style={{ color: 'white' }} />
         </div>
-    ) : (
-      children
-    )}
-  </UserContext.Provider>
+      ) : (
+        children
+      )}
+    </UserContext.Provider>
   );
 };
 

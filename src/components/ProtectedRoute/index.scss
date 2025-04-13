@@ -1,37 +1,36 @@
 @import '../../assets/styles/global';
 
-.container {  
-    display: flex;
-    height: 100vh;  
-    
-    &-sidebar {
-        position: fixed; 
-        top: 0;
-        left: 0;
-        width: 240px; 
-        height: 100vh; 
-        box-sizing: border-box;
-        z-index: 100; 
-        border-right: 1px solid $gray-200;
-    }
-  
-  
-    &-navbar {
-        position: fixed; 
-        top: 0;
-        left: 240px; 
-        right: 0;
-        height: 60px; 
-        z-index: 90; 
-        border-bottom: 1px solid $gray-200;
-    }
+.container {
+  display: flex;
+  height: 100vh;
 
-    &-body {
-        margin-left: 240px; 
-        margin-top: 60px; 
-        padding: 16px;
-        width: 100%;
-        box-sizing: border-box;
-        overflow-y: auto; 
-    }
+  &-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 240px;
+    height: 100vh;
+    box-sizing: border-box;
+    z-index: 100;
+    border-right: 1px solid $gray-200;
+  }
+
+  &-navbar {
+    position: fixed;
+    top: 0;
+    left: 240px;
+    right: 0;
+    height: 60px;
+    z-index: 90;
+    border-bottom: 1px solid $gray-200;
+  }
+
+  &-body {
+    margin-left: 240px;
+    margin-top: 60px;
+    padding: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    overflow-y: auto;
+  }
 }

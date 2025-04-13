@@ -2,16 +2,29 @@ import './index.scss';
 import Image from '../../assets/images/illustration-register.png';
 import SuccessImage from '../../assets/images/illustration-register-success.png';
 import { useState } from 'react';
-import { Alert, AlertColor, Button, FormControl, IconButton, InputLabel, MenuItem, Select, Snackbar, Step, StepLabel, Stepper, TextField } from '@mui/material';
+import {
+  Alert,
+  AlertColor,
+  Button,
+  FormControl,
+  IconButton,
+  InputLabel,
+  MenuItem,
+  Select,
+  Snackbar,
+  Step,
+  StepLabel,
+  Stepper,
+  TextField,
+} from '@mui/material';
 import { Formik, Field, Form } from 'formik';
 import api from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-
 export default function RegisterPage() {
   const navigate = useNavigate();
-  
+
   const [snackbar, setSnackbar] = useState({
     open: false,
     type: '',
@@ -28,8 +41,8 @@ export default function RegisterPage() {
   };
 
   const goToLogin = () => {
-    navigate('/')
-  }
+    navigate('/');
+  };
 
   const handleBack = () => {
     setActiveStep((prevStep) => prevStep - 1);
@@ -37,7 +50,11 @@ export default function RegisterPage() {
 
   const handleCepChange = async (
     e: React.ChangeEvent<HTMLInputElement>,
-    setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void
+    setFieldValue: (
+      field: string,
+      value: string | number,
+      shouldValidate?: boolean
+    ) => void
   ) => {
     const cep = e.target.value;
 
@@ -53,7 +70,7 @@ export default function RegisterPage() {
         setFieldValue('logradouro', data.logradouro || '');
         setFieldValue('bairro', data.bairro || '');
         setFieldValue('complemento', data.complemento || '');
-  
+
         setDisabledFields(false);
 
         setSnackbar({
@@ -61,8 +78,6 @@ export default function RegisterPage() {
           type: 'success',
           message: 'CEP encontrado',
         });
-
-    
       } catch (err) {
         console.error('Erro ao buscar o endereço:', err);
 
@@ -74,7 +89,7 @@ export default function RegisterPage() {
           message: 'Ocorreu um erro ao buscar o endereço',
         });
       }
-    } else {  
+    } else {
       setDisabledFields(true);
       setFieldValue('cidade', '');
       setFieldValue('estado', '');
@@ -85,14 +100,20 @@ export default function RegisterPage() {
   };
 
   const setField = (
-    field: string, 
+    field: string,
     e: React.ChangeEvent<HTMLInputElement>,
-    setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void
+    setFieldValue: (
+      field: string,
+      value: string | number,
+      shouldValidate?: boolean
+    ) => void
   ) => {
     const value = e.target.value;
 
-    setFieldValue(field, value);
-  }
+    const parsedValue = isNaN(Number(value)) ? value : Number(value);
+
+    setFieldValue(field, parsedValue);
+  };
 
   return (
     <div className="register">
@@ -114,11 +135,11 @@ export default function RegisterPage() {
       <div className="register-content">
         <div className="register-create">
           <div className="register-create__title">
-            <IconButton color='secondary' onClick={() => goToLogin()} >
-                <ArrowBackIcon />
-              </IconButton>
+            <IconButton color="secondary" onClick={() => goToLogin()}>
+              <ArrowBackIcon />
+            </IconButton>
 
-          <h1 className="register-create__title">Criar conta</h1>
+            <h1 className="register-create__title">Criar conta</h1>
           </div>
           <p className="register-create__text">
             Preencha todos os campos para criar sua conta
@@ -150,20 +171,20 @@ export default function RegisterPage() {
                 complemento: '',
               }}
               onSubmit={(values) => {
-                if(activeStep === 1) {      
+                if (activeStep === 1) {
                   api
-                  .post(`/user`, values)
-                  .then(() => {
-                    handleNext();
-                    setImageSrc(SuccessImage)
-                  })
-                  .catch(() => { 
-                    setSnackbar({
-                      open: true,
-                      type: 'error',
-                      message: 'Ocorreu um erro cadastrar o usuário',
+                    .post(`/user`, values)
+                    .then(() => {
+                      handleNext();
+                      setImageSrc(SuccessImage);
                     })
-                  });
+                    .catch(() => {
+                      setSnackbar({
+                        open: true,
+                        type: 'error',
+                        message: 'Ocorreu um erro cadastrar o usuário',
+                      });
+                    });
                 } else {
                   handleNext();
                 }
@@ -171,143 +192,154 @@ export default function RegisterPage() {
             >
               {({ values, handleChange, setFieldValue }) => (
                 <Form>
-                    {activeStep === 0 && (
-                      <div className="register-form">
+                  {activeStep === 0 && (
+                    <div className="register-form">
+                      <Field
+                        name="nome"
+                        label="Nome"
+                        fullWidth
+                        component={TextField}
+                        margin="normal"
+                        required
+                      />
+                      <Field
+                        name="sobrenome"
+                        label="Sobrenome"
+                        fullWidth
+                        component={TextField}
+                        margin="normal"
+                        required
+                      />
+                      <Field
+                        name="cpf"
+                        label="CPF"
+                        fullWidth
+                        component={TextField}
+                        margin="normal"
+                        required
+                      />
+                      <Field
+                        name="email"
+                        label="Email"
+                        fullWidth
+                        component={TextField}
+                        margin="normal"
+                        required
+                      />
+                      <Field
+                        name="senha"
+                        label="Senha"
+                        type="password"
+                        fullWidth
+                        component={TextField}
+                        margin="normal"
+                        required
+                      />
+                      <FormControl fullWidth margin="normal">
+                        <InputLabel>Sexo</InputLabel>
                         <Field
-                          name="nome"
-                          label="Nome"
-                          fullWidth
-                          component={TextField}
-                          margin="normal"
+                          name="sexo"
+                          as={Select}
+                          value={values.sexo}
+                          onChange={handleChange}
                           required
-                        />
-                        <Field
-                          name="sobrenome"
-                          label="Sobrenome"
-                          fullWidth
-                          component={TextField}
-                          margin="normal"
-                          required
-                        />
-                        <Field
-                          name="cpf"
-                          label="CPF"
-                          fullWidth
-                          component={TextField}
-                          margin="normal"
-                          required
-                        />
-                        <Field
-                          name="email"
-                          label="Email"
-                          fullWidth
-                          component={TextField}
-                          margin="normal"
-                          required
-                        />
-                        <Field
-                          name="senha"
-                          label="Senha"
-                          type="password"
-                          fullWidth
-                          component={TextField}
-                          margin="normal"
-                          required
-                        />
-                        <FormControl fullWidth margin="normal">
-                          <InputLabel>Sexo</InputLabel>
-                          <Field
-                            name="sexo"
-                            as={Select}
-                            value={values.sexo}
-                            onChange={handleChange}
-                            required
-                          >
-                            <MenuItem value="Masculino">Masculino</MenuItem>
-                            <MenuItem value="Feminino">Feminino</MenuItem>
-                            <MenuItem value="Outro">Outro</MenuItem>
-                          </Field>
-                        </FormControl>
-                        <Field
-                          name="dt_nascimento"
-                          label="Data de Nascimento"
-                          component={TextField}
-                          required
-                        />
-                        
-                      </div>
-                    )}
+                        >
+                          <MenuItem value="Masculino">Masculino</MenuItem>
+                          <MenuItem value="Feminino">Feminino</MenuItem>
+                          <MenuItem value="Outro">Outro</MenuItem>
+                        </Field>
+                      </FormControl>
+                      <Field
+                        name="dt_nascimento"
+                        label="Data de Nascimento"
+                        component={TextField}
+                        required
+                      />
+                    </div>
+                  )}
 
-                    {activeStep === 1 && (
-                      <div className="register-form">
-                        <Field
-                          name="cep"
-                          label="CEP"
-                          fullWidth
-                          component={TextField}
-                          margin="normal"
-                          value={values.cep}
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleCepChange(e, setFieldValue)}
-                          required
-                        />
-                        <Field
-                          name="cidade"
-                          label="Cidade"
-                          fullWidth
-                          component={TextField}
-                          margin="normal"
-                          value={values.cidade}
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setField('cidade', e, setFieldValue)}
-                          disabled={disabledFields}
-                          required
-                        />
-                        <Field
-                          name="estado"
-                          label="Estado"
-                          fullWidth
-                          component={TextField}
-                          margin="normal"
-                          value={values.estado}
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setField('estado', e, setFieldValue)}
-                          disabled={disabledFields}
-                          required
-                        />
-                        <Field
-                          name="logradouro"
-                          label="Logradouro"
-                          fullWidth
-                          component={TextField}
-                          margin="normal"
-                          value={values.logradouro}
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setField('logradouro', e, setFieldValue)}
-                          disabled={disabledFields}
-                          required
-                        />
-                        <Field
-                          name="bairro"
-                          label="Bairro"
-                          fullWidth
-                          component={TextField}
-                          margin="normal"
-                          value={values.bairro}
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setField('bairro', e, setFieldValue)}
-                          disabled={disabledFields}
-                          required
-                        />
-                        <Field
-                          name="complemento"
-                          label="Complemento"
-                          fullWidth
-                          component={TextField}
-                          margin="normal"
-                          value={values.complemento}
-                          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setField('complemento', e, setFieldValue)}
-                          disabled={disabledFields}
-                          required
-                        />
-                      </div>
-                    )}
-                  { activeStep < 2 && 
+                  {activeStep === 1 && (
+                    <div className="register-form">
+                      <Field
+                        name="cep"
+                        label="CEP"
+                        fullWidth
+                        component={TextField}
+                        margin="normal"
+                        value={values.cep}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          handleCepChange(e, setFieldValue)
+                        }
+                        required
+                      />
+                      <Field
+                        name="cidade"
+                        label="Cidade"
+                        fullWidth
+                        component={TextField}
+                        margin="normal"
+                        value={values.cidade}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          setField('cidade', e, setFieldValue)
+                        }
+                        disabled={disabledFields}
+                        required
+                      />
+                      <Field
+                        name="estado"
+                        label="Estado"
+                        fullWidth
+                        component={TextField}
+                        margin="normal"
+                        value={values.estado}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          setField('estado', e, setFieldValue)
+                        }
+                        disabled={disabledFields}
+                        required
+                      />
+                      <Field
+                        name="logradouro"
+                        label="Logradouro"
+                        fullWidth
+                        component={TextField}
+                        margin="normal"
+                        value={values.logradouro}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          setField('logradouro', e, setFieldValue)
+                        }
+                        disabled={disabledFields}
+                        required
+                      />
+                      <Field
+                        name="bairro"
+                        label="Bairro"
+                        fullWidth
+                        component={TextField}
+                        margin="normal"
+                        value={values.bairro}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          setField('bairro', e, setFieldValue)
+                        }
+                        disabled={disabledFields}
+                        required
+                      />
+                      <Field
+                        name="complemento"
+                        label="Complemento"
+                        fullWidth
+                        component={TextField}
+                        margin="normal"
+                        value={values.complemento}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          setField('complemento', e, setFieldValue)
+                        }
+                        disabled={disabledFields}
+                        required
+                      />
+                    </div>
+                  )}
+                  {activeStep < 2 && (
                     <div className="register-form__buttons">
                       <Button
                         disabled={activeStep === 0}
@@ -316,33 +348,34 @@ export default function RegisterPage() {
                       >
                         Voltar
                       </Button>
-                      <Button
-                        variant="contained"
-                        type="submit"
-                      >
-                        {activeStep === steps.length - 1 ? 'Finalizar' : 'Próximo'}
+                      <Button variant="contained" type="submit">
+                        {activeStep === steps.length - 1
+                          ? 'Finalizar'
+                          : 'Próximo'}
                       </Button>
                     </div>
-                  }
-                  
-                  { activeStep === 2 &&
-                      <div className='register-success'>
-                      <h1 className='register-success__title'>
+                  )}
+
+                  {activeStep === 2 && (
+                    <div className="register-success">
+                      <h1 className="register-success__title">
                         Cadastro realizado com sucesso
                       </h1>
-                      <p className='register-success__text'>Faça login com seu e-mail e senha para entrar na plataforma</p>
+                      <p className="register-success__text">
+                        Faça login com seu e-mail e senha para entrar na
+                        plataforma
+                      </p>
                       <div>
                         <Button
-                          color='secondary'
+                          color="secondary"
                           variant="contained"
                           onClick={goToLogin}
                         >
-                          Ir para login 
+                          Ir para login
                         </Button>
                       </div>
                     </div>
-                  }
-                  
+                  )}
                 </Form>
               )}
             </Formik>

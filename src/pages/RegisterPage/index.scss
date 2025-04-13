@@ -1,80 +1,77 @@
 @import '../../assets/styles/global';
 
-.register {    
+.register {
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+
+  &-content {
     display: flex;
-    justify-content: center;
-    padding: 16px;
+    gap: 40px;
+    align-items: center;
+  }
 
-    &-content {
-        display: flex;
-        gap: 40px;
-        align-items: center;
+  &-image {
+    img {
+      width: 100%;
+      max-width: 480px;
     }
 
-    &-image {
-        img {  
-            width: 100%;
-            max-width: 480px;
-        }
+    @include max-md {
+      display: none;
+    }
+  }
 
-        @include max-md {
-            display: none;
-        }
+  &-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 24px;
+    row-gap: 8px;
+
+    &__buttons {
+      margin-top: 16px;
+      display: flex;
+      gap: 16px;
+    }
+  }
+
+  &-success {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+
+    &__title {
+      font-weight: 700;
+      color: $gray-600;
+      max-width: 400px;
+      text-align: center;
     }
 
-    &-form {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        column-gap: 24px;
-        row-gap: 8px;
+    &__text {
+      font-size: 16px;
+      color: $gray-400;
+    }
+  }
 
-        &__buttons {
-            margin-top: 16px;
-            display: flex;
-            gap: 16px;
-        }
+  &-create {
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    &__title {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 700;
+      color: $primary-color;
     }
 
-    &-success {
-        margin-top: 16px;
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-        align-items: center;
-
-        &__title {
-            font-weight: 700;
-            color: $gray-600;
-            max-width: 400px;
-            text-align: center;
-        }
-
-        &__text {
-            font-size: 16px;
-            color: $gray-400;
-        }
-
+    &__text {
+      font-size: 16px;
+      color: $gray-400;
     }
-
-    &-create {
-        max-width: 600px;
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-
-        &__title {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            font-weight: 700;
-            color: $primary-color;
-        }
-
-        &__text {
-            font-size: 16px;
-            color: $gray-400;
-        }
-        
-    }
-    
+  }
 }

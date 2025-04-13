@@ -1,26 +1,24 @@
 @import '../../assets/styles/global';
 
 .not-found {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-    align-items: center;
-    height: 100%;
-    margin-top: 40px;
-    
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  align-items: center;
+  height: 100%;
+  margin-top: 40px;
 
-    &-image {
-        width: 100%;
-        max-width: 400px;
-    }
+  &-image {
+    width: 100%;
+    max-width: 400px;
+  }
 
-    &-title {
-        font-weight: 700;
-        color: $gray-600;
-    }
+  &-title {
+    font-weight: 700;
+    color: $gray-600;
+  }
 
-    &-text {
-        color: $gray-500;
-    }
-    
+  &-text {
+    color: $gray-500;
+  }
 }

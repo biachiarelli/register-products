@@ -16,14 +16,17 @@ export default function App() {
     <UserProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" 
+          <Route
+            path="/"
             element={
-              token ? 
-              <ProtectedRoute>
-                <ProductListPage />
-              </ProtectedRoute>
-              : <Login />
-              } 
+              token ? (
+                <ProtectedRoute>
+                  <ProductListPage />
+                </ProtectedRoute>
+              ) : (
+                <Login />
+              )
+            }
           />
 
           <Route path="/login" element={<Login />} />
@@ -62,18 +65,19 @@ export default function App() {
               </ProtectedRoute>
             }
           />
-          
+
           <Route
             path="*"
             element={
-              token ?
-              <ProtectedRoute>
+              token ? (
+                <ProtectedRoute>
+                  <NotFoundPage />
+                </ProtectedRoute>
+              ) : (
                 <NotFoundPage />
-              </ProtectedRoute> 
-              :
-              <NotFoundPage />
+              )
             }
-          /> 
+          />
         </Routes>
       </BrowserRouter>
     </UserProvider>

@@ -1,10 +1,9 @@
 import './index.scss';
-import { AxiosResponse } from "axios";
-import api from "../../services/api";
-import { Product } from "../../models/Product";
-import { useEffect, useState } from "react";
+import { AxiosResponse } from 'axios';
+import api from '../../services/api';
+import { Product } from '../../models/Product';
+import { useEffect, useState } from 'react';
 import {
-  Avatar,
   Table,
   TableBody,
   TableCell,
@@ -34,7 +33,9 @@ export default function ProductListPage() {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
@@ -55,7 +56,7 @@ export default function ProductListPage() {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchValue(value);
-    getProducts(value); 
+    getProducts(value);
   };
 
   const goToProductForm = () => {
@@ -75,15 +76,15 @@ export default function ProductListPage() {
           Cadastrar novo produto
         </Button>
       </div>
-      
+
       <TextField
-          label="Buscar produto"
-          variant="outlined"
-          size="small"
-          value={searchValue}
-          onChange={handleSearchChange}
-        />
-        
+        label="Buscar produto"
+        variant="outlined"
+        size="small"
+        value={searchValue}
+        onChange={handleSearchChange}
+      />
+
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -115,14 +116,19 @@ export default function ProductListPage() {
                   <TableCell>{Number(product.qt_estoque) || '-'}</TableCell>
                   <TableCell>{Number(product.qt_vendas) || '-'}</TableCell>
                   <TableCell>
-                  { Number(product.preco)
-                    ? `R$ ${Number(product.preco).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-                    : product.preco }
+                    {Number(product.preco)
+                      ? `R$ ${Number(product.preco).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+                      : product.preco}
                   </TableCell>
-                  <TableCell>{format(new Date(product.createdAt), 'dd/MM/yyyy HH:mm')}</TableCell>
                   <TableCell>
-                    <Tooltip title="Ver detalhes" >
-                      <IconButton color='secondary' onClick={() => navigate(`/product/${product.id}`)}>
+                    {format(new Date(product.createdAt), 'dd/MM/yyyy HH:mm')}
+                  </TableCell>
+                  <TableCell>
+                    <Tooltip title="Ver detalhes">
+                      <IconButton
+                        color="secondary"
+                        onClick={() => navigate(`/product/${product.id}`)}
+                      >
                         <VisibilityIcon />
                       </IconButton>
                     </Tooltip>

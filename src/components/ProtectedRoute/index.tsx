@@ -19,16 +19,13 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     <div className="container">
       <div className="container-sidebar">
         <Sidebar />
-      </div>  
+      </div>
       <div className="container-navbar">
         <Navbar />
-      </div> 
-      <div className="container-body">
-        {children}
       </div>
+      <div className="container-body">{children}</div>
     </div>
   );
 };
-
 
 export default ProtectedRoute;

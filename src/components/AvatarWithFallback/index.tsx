@@ -2,9 +2,7 @@ import { useEffect, useState } from 'react';
 import { Avatar, AvatarProps } from '@mui/material';
 import fallbackAvatar from '../../assets/images/product-icon.png';
 
-interface AvatarWithFallbackProps extends AvatarProps {}
-
-const AvatarWithFallback = ({ src, ...rest }: AvatarWithFallbackProps) => {
+const AvatarWithFallback = ({ src, ...rest }: AvatarProps) => {
   const [validSrc, setValidSrc] = useState<string | undefined>(undefined);
 
   useEffect(() => {
