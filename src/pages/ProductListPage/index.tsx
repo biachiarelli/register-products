@@ -64,12 +64,12 @@ export default function ProductListPage() {
         <h1 className="product-list-header__title">Lista de produtos</h1>
         
         <Button
-            variant="contained"
-            color="secondary"
-            onClick={() => goToProductForm()}
-          >
-            Cadastrar novo produto
-          </Button>
+          variant="contained"
+          color="secondary"
+          onClick={() => goToProductForm()}
+        >
+          Cadastrar novo produto
+        </Button>
       </div>
       
       <TableContainer component={Paper}>

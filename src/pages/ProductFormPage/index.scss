@@ -1,0 +1,19 @@
+@import '../../assets/styles/global';
+
+.product-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    &-header {
+        display: flex;
+        justify-content: space-between;
+
+        &__title {
+            font-weight: 700;
+            color: $primary-color;
+        }
+
+    }
+    
+}

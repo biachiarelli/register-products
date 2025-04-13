@@ -10,7 +10,7 @@ export default function Sidebar() {
       <img className="sidebar-logo" src={Logo} alt='Produtos' />
       <nav>
         <ul>
-          <li className={location.pathname === '/products' ? 'active' : ''}>
+          <li className={(location.pathname === '/products' || location.pathname === '/') ? 'active' : ''}>
             <Link to="/products">Lista de Produtos</Link>
           </li>
           <li className={location.pathname === '/form-product' ? 'active' : ''}>

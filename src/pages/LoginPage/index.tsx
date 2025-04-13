@@ -1,7 +1,7 @@
 import './index.scss';
 import Image from '../../assets/images/illustration-login.png';
 import { Alert, AlertColor, Button, Snackbar, TextField } from '@mui/material';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import api from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 import { User } from '../../models/User';
