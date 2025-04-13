@@ -14,67 +14,75 @@ import {
   Paper,
   TablePagination,
   Button,
+  IconButton,
+  TextField,
+  Tooltip,
 } from '@mui/material';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
-import { IconButton } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import Tooltip from '@mui/material/Tooltip';
 
 export default function ProductListPage() {
   const navigate = useNavigate();
-  const [ products, setProducts ] = useState<Product[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(15);
+  const [searchValue, setSearchValue] = useState('');
 
-  
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
-  
+
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0); 
+    setPage(0);
   };
 
-  const getProducts = () => {
+  const getProducts = (search = '') => {
     api
-      .get<unknown, AxiosResponse<Product[]>>(`/produto`)
-      .then((res) => {
-        setProducts(res.data)
+      .get<unknown, AxiosResponse<Product[]>>(`/produto`, {
+        params: {
+          search: search || undefined,
+        },
       })
-      .catch(() => {
-
-      });
+      .then((res) => {
+        setProducts(res.data);
+      })
+      .catch(() => {});
   };
 
-  const goToProductForm = (id?: string) => {
-    if(id)
-      navigate('/form-product')
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchValue(value);
+    getProducts(value); 
+  };
 
-    
-    navigate('/form-product')
-  }
-  
+  const goToProductForm = () => {
+    navigate('/form-product');
+  };
 
-  useEffect(()=> {
-    getProducts()
+  useEffect(() => {
+    getProducts();
   }, []);
 
   return (
     <div className="product-list">
       <div className="product-list-header">
         <h1 className="product-list-header__title">Lista de produtos</h1>
-        
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => goToProductForm()}
-        >
+
+        <Button variant="contained" color="secondary" onClick={goToProductForm}>
           Cadastrar novo produto
         </Button>
       </div>
       
+      <TextField
+          label="Buscar produto"
+          variant="outlined"
+          size="small"
+          value={searchValue}
+          onChange={handleSearchChange}
+        />
+        
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -90,42 +98,53 @@ export default function ProductListPage() {
             </TableRow>
           </TableHead>
           <TableBody>
-          {products.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((product) => (
-            <TableRow key={product.id}>
-              <TableCell>
-                <Avatar src={product.avatar} alt={product.nome}  />
-              </TableCell>
-              <TableCell>{product.nome}</TableCell>
-              <TableCell>{product.marca}</TableCell>
-              <TableCell>{Number(product.qt_estoque) ? `${Number(product.qt_estoque)}` : '-'  }</TableCell>
-              <TableCell>{Number(product.qt_vendas) ? `${Number(product.qt_vendas)}` : '-'  }</TableCell>
-              <TableCell>{ Number(product.preco) ? `R$ ${Number(product.preco).toFixed(2)}` : product.preco }</TableCell>
-              <TableCell>{format(new Date(product.createdAt), 'dd/MM/yyyy HH:mm')} </TableCell>
-              <TableCell>
-                <Tooltip title="Ver detalhes">
-                  <IconButton onClick={() => navigate(`/product/${product.id}`)} >
-                    <VisibilityIcon />
-                  </IconButton>
-                </Tooltip>
-              </TableCell>
-
-            </TableRow>
-            ))}
+            {products
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((product) => (
+                <TableRow key={product.id}>
+                  <TableCell>
+                    <Avatar
+                      src={product.avatar}
+                      alt={product.nome}
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.onerror = null;
+                        target.src = '/fallback-image.png'; // ou caminho da sua imagem fallback
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell>{product.nome}</TableCell>
+                  <TableCell>{product.marca}</TableCell>
+                  <TableCell>{Number(product.qt_estoque) || '-'}</TableCell>
+                  <TableCell>{Number(product.qt_vendas) || '-'}</TableCell>
+                  <TableCell>
+                    {Number(product.preco)
+                      ? `R$ ${Number(product.preco).toFixed(2)}`
+                      : product.preco}
+                  </TableCell>
+                  <TableCell>{format(new Date(product.createdAt), 'dd/MM/yyyy HH:mm')}</TableCell>
+                  <TableCell>
+                    <Tooltip title="Ver detalhes">
+                      <IconButton onClick={() => navigate(`/product/${product.id}`)}>
+                        <VisibilityIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
-        
+
         <TablePagination
-            rowsPerPageOptions={[5, 10, 15, 20]}
-            component="div"
-            count={products.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
+          rowsPerPageOptions={[5, 10, 15, 20]}
+          component="div"
+          count={products.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </TableContainer>
-    
     </div>
   );
 }
-
