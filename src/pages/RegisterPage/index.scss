@@ -1,7 +1,7 @@
 @import '../../assets/styles/global';
 
 .register {    
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -10,11 +10,13 @@
     &-content {
         display: flex;
         gap: 40px;
+        align-items: center;
     }
 
     &-image {        
         width: 100%;
-        max-width: 300px;
+        height: 100%;
+        max-width: 400px;
 
         @include max-md {
             display: none;
@@ -22,10 +24,24 @@
     }
 
     &-form {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 24px;
+        row-gap: 8px;
+
+        &__buttons {
+            margin-top: 16px;
+            display: flex;
+            gap: 16px;
+        }
+
+    }
+
+    &-create {
         max-width: 600px;
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 16px;
 
         &__title {
             font-weight: 700;
@@ -35,15 +51,6 @@
         &__text {
             font-size: 16px;
             color: $gray-400;
-        }
-
-        &__footer {
-            text-align: center;
-            margin-top: 16px;
-        }
-
-        &__link {
-            color: $primary-color;
         }
         
     }
