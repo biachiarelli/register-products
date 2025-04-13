@@ -17,6 +17,9 @@ import {
 } from '@mui/material';
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
+import { IconButton } from '@mui/material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import Tooltip from '@mui/material/Tooltip';
 
 export default function ProductListPage() {
   const navigate = useNavigate();
@@ -83,6 +86,7 @@ export default function ProductListPage() {
               <TableCell>Vendas</TableCell>
               <TableCell>Preço</TableCell>
               <TableCell>Criado em</TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -97,6 +101,13 @@ export default function ProductListPage() {
               <TableCell>{Number(product.qt_vendas) ? `${Number(product.qt_vendas)}` : '-'  }</TableCell>
               <TableCell>{ Number(product.preco) ? `R$ ${Number(product.preco).toFixed(2)}` : product.preco }</TableCell>
               <TableCell>{format(new Date(product.createdAt), 'dd/MM/yyyy HH:mm')} </TableCell>
+              <TableCell>
+                <Tooltip title="Ver detalhes">
+                  <IconButton onClick={() => navigate(`/product/${product.id}`)} >
+                    <VisibilityIcon />
+                  </IconButton>
+                </Tooltip>
+              </TableCell>
 
             </TableRow>
             ))}

@@ -47,6 +47,14 @@ export default function App() {
             }
           />
           <Route
+            path="/form-product/:id"
+            element={
+              <ProtectedRoute>
+                <ProductFormPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/product/:id"
             element={
               <ProtectedRoute>
