@@ -19,6 +19,15 @@ export default function ProductFormPage() {
   });
   const { id } = useParams<{ id: string }>(); 
   const [product, setProduct] = useState<Product | null>(null);
+  const [initialValues, setInitialValues] = useState(
+    { nome: '',
+      avatar: '',
+      preco: '',
+      qt_estoque: 0,
+      qt_vendas: 0,
+      marca: '',
+    }
+  )
 
   const goToDeatils = () => {
     navigate(`/product/${id}`);
@@ -31,7 +40,14 @@ export default function ProductFormPage() {
       .get<unknown, AxiosResponse<Product>>(`/produto/${id}`)
       .then((res) => {
         setProduct(res.data)
-      })
+        setInitialValues({ nome: res.data.nome,
+          avatar: res.data.avatar,
+          preco: res.data.preco,
+          qt_estoque: res.data.qt_estoque,
+          qt_vendas: res.data.qt_vendas,
+          marca: res.data.marca,
+        })
+        })
       .catch((err) => {
         console.error('Erro ao buscar produto', err);
       });
@@ -69,14 +85,8 @@ export default function ProductFormPage() {
         <h1 className="product-form-header__title"> {id ? 'Editar produto' : 'Cadastrar novo produto'}</h1>
       </div>
       <Formik
-          initialValues={{
-            nome: '',
-            avatar: '',
-            preco: '',
-            qt_estoque: '',
-            qt_vendas: '',
-            marca: '',
-          }}
+          initialValues={initialValues}
+          enableReinitialize={true} 
           onSubmit={async (values, { resetForm }) => {
             console.log(values)
 
@@ -156,6 +166,7 @@ export default function ProductFormPage() {
                 label="Quantidade em estoque"
                 fullWidth
                 margin="normal"
+                type="number"
                 component={TextField}
                 required
               />
@@ -164,6 +175,7 @@ export default function ProductFormPage() {
                 label="Quantidade de vendas"
                 fullWidth
                 margin="normal"
+                type="number"
                 component={TextField}
                 required
               />
