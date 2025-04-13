@@ -1,10 +1,19 @@
 @import '../../assets/styles/global';
 
 .product-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 
-    &-title {
-        font-weight: 700;
-        color: $primary-color;
+    &-header {
+        display: flex;
+        justify-content: space-between;
+
+        &__title {
+            font-weight: 700;
+            color: $primary-color;
+        }
+
     }
     
 }
