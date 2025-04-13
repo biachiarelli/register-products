@@ -31,7 +31,7 @@ export default function ProductListPage() {
   
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0); // resetar para a primeira página
+    setPage(0); 
   };
 
   const getProducts = () => {

@@ -1,12 +1,14 @@
 import { Avatar, Menu, MenuItem } from '@mui/material';
 import './index.scss';
 import ImageUserFallback from '../../assets/images/illustration-login.png'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { useUser } from '../../context/UserContext';
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const { user, logout } = useUser();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [imgSrc, setImgSrc] = useState('');
   
@@ -19,9 +21,13 @@ export default function Navbar() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    logout()
     navigate('/login')
   };
+
+  useEffect(()=> {
+    setImgSrc(user?.image as string)
+  }, [ user ])
   
   return (
     <div className="navbar">
@@ -32,7 +38,7 @@ export default function Navbar() {
           onError={() => setImgSrc(ImageUserFallback)}
         />
 
-        <span className="navbar-text">Nome usuário</span>
+        <span className="navbar-text">{user?.nome} {user?.sobrenome}</span>
       </div>
       <Menu
           anchorEl={anchorEl}

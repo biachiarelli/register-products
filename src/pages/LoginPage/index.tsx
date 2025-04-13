@@ -5,10 +5,11 @@ import { FormEvent, useEffect, useState } from 'react';
 import api from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 import { User } from '../../models/User';
-import { AxiosResponse } from 'axios';
+import { useUser } from '../../context/UserContext';
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const { setUser, setIsLoading } = useUser();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [snackbar, setSnackbar] = useState({
@@ -19,14 +20,18 @@ export default function LoginPage() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    setIsLoading(true);
     api
-      .get<unknown, AxiosResponse<User[]>>(`/user?search=${email}`)
+      .get<User[]>(`/user?search=${email}`)
       .then((res) => {
         if (res.data[0]) {
           const user = res.data[0];
+          
+          setIsLoading(false);
+
           if (user.senha === password) {
             localStorage.setItem('token', user.token);
+            setUser(user);
             navigate('/products');
           } else {
             setSnackbar({
@@ -44,6 +49,7 @@ export default function LoginPage() {
         }
       })
       .catch(() => {
+        setIsLoading(false);
         setSnackbar({
           open: true,
           type: 'error',
