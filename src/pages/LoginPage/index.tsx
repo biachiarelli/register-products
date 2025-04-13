@@ -1,9 +1,11 @@
 import './index.scss';
 import Image from '../../assets/images/illustration-register.png';
-import { Alert, Button, Snackbar, TextField } from '@mui/material';
+import { Alert, AlertColor, Button, Snackbar, TextField } from '@mui/material';
 import { FormEvent, useState } from 'react';
 import api from '../../services/api';
 import { useNavigate } from 'react-router-dom';
+import { User } from '../../models/User';
+import { AxiosResponse } from 'axios';
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -19,8 +21,8 @@ export default function LoginPage() {
     e.preventDefault();
 
     api
-      .get(`/user?search=${email}`)
-      .then((res: any) => {
+      .get<unknown, AxiosResponse<User[]>>(`/user?search=${email}`)
+      .then((res) => {
         console.log(res);
 
         if (res.data[0]) {
@@ -62,7 +64,7 @@ export default function LoginPage() {
       >
         <Alert
           onClose={() => setSnackbar({ ...snackbar, open: false })}
-          severity={snackbar.type}
+          severity={snackbar.type as AlertColor}
           variant="filled"
           sx={{ width: '100%' }}
         >
