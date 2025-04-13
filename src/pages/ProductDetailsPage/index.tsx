@@ -9,11 +9,12 @@ import { AxiosResponse } from 'axios';
 import api from '../../services/api';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import fallbackAvatar from '../../assets/images/product-icon.png'
+import { format } from 'date-fns';
 
 export default function ProductDetailsPage() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>(); 
-  const [produto, setProduto] = useState<Product | null>(null);
+  const [product, setProduct] = useState<Product | null>(null);
   const [openModal, setOpenModal] = useState(false);
   const [avatarSrc, setAvatarSrc] = useState(fallbackAvatar);
 
@@ -33,13 +34,13 @@ export default function ProductDetailsPage() {
     if (!id) return; 
     
     api
-      .delete<unknown, AxiosResponse<Product>>(`/produto/${id}`)
+      .delete<unknown, AxiosResponse<Product>>(`/product/${id}`)
       .then(() => {
-        navigate('/products');
+        navigate('/product');
       })
       .catch((err) => {
         setOpenModal(false);
-        console.error('Erro ao buscar produto', err);
+        console.error('Erro ao buscar product', err);
       });
       
   };
@@ -58,11 +59,11 @@ export default function ProductDetailsPage() {
     api
       .get<unknown, AxiosResponse<Product>>(`/produto/${id}`)
       .then((res) => {
-        setProduto(res.data)
+        setProduct(res.data)
         setAvatarSrc(res.data.avatar)
       })
       .catch((err) => {
-        console.error('Erro ao buscar produto', err);
+        console.error('Erro ao buscar product', err);
       });
   };
   
@@ -108,7 +109,7 @@ export default function ProductDetailsPage() {
       <div className='content-data'>
           <Avatar
             src={avatarSrc}
-            alt={produto?.nome}
+            alt={product?.nome}
             sx={{ width: 100, height: 100, marginBottom: 2 }}
             onError={handleAvatarError} 
           />
@@ -121,7 +122,7 @@ export default function ProductDetailsPage() {
               Nome
             </p>
             <p className='content-data__text'>
-              {produto?.nome || '-'}
+              {product?.nome || '-'}
             </p>
           </div>
           <div className='content-data'>
@@ -129,7 +130,7 @@ export default function ProductDetailsPage() {
               Marca
             </p>
             <p className='content-data__text'>
-              {produto?.marca || '-'}
+              {product?.marca || '-'}
             </p>
           </div>
           
@@ -138,7 +139,7 @@ export default function ProductDetailsPage() {
               Data de criação
             </p>
             <p className='content-data__text'>
-              {produto?.createdAt || '-'}
+              {product?.createdAt ? format(new Date(product?.createdAt), 'dd/MM/yyyy HH:mm') : '-'}
             </p>
           </div>
 
@@ -147,7 +148,13 @@ export default function ProductDetailsPage() {
               Preço
             </p>
             <p className='content-data__text'>
-              {produto?.preco || '-'}
+              
+            { product?.preco ? 
+              Number(product.preco)
+              ? `R$ ${Number(product.preco).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+              : product.preco 
+              : '-'
+            }
             </p>
           </div>
           
@@ -156,7 +163,7 @@ export default function ProductDetailsPage() {
               Qtd. Estoque
             </p>
             <p className='content-data__text'>
-              {produto?.qt_estoque || '-'}
+              {product?.qt_estoque || '-'}
             </p>
           </div>
           
@@ -165,7 +172,7 @@ export default function ProductDetailsPage() {
               Qtd. Vendidos
             </p>
             <p className='content-data__text'>
-              {produto?.qt_vendas || '-'}
+              {product?.qt_vendas || '-'}
             </p>
           </div>
           
@@ -176,7 +183,7 @@ export default function ProductDetailsPage() {
       <Dialog open={openModal} onClose={handleCancelDelete}>
         <DialogTitle>Confirmar Exclusão</DialogTitle>
         <DialogContent>
-          Tem certeza de que deseja excluir este produto?
+          Tem certeza de que deseja excluir este product?
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCancelDelete} color="primary">

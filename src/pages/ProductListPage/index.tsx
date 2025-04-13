@@ -21,6 +21,7 @@ import {
 import { format } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import AvatarWithFallback from '../../components/AvatarWithFallback';
 
 export default function ProductListPage() {
   const navigate = useNavigate();
@@ -100,17 +101,13 @@ export default function ProductListPage() {
           <TableBody>
             {products
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((product) => (
-                <TableRow key={product.id}>
+              .map((product, index) => (
+                <TableRow key={`${product.id}-${index}`}>
                   <TableCell>
-                    <Avatar
+                    <AvatarWithFallback
                       src={product.avatar}
                       alt={product.nome}
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.onerror = null;
-                        target.src = '/fallback-image.png'; // ou caminho da sua imagem fallback
-                      }}
+                      sx={{ width: 40, height: 40 }}
                     />
                   </TableCell>
                   <TableCell>{product.nome}</TableCell>
@@ -118,14 +115,14 @@ export default function ProductListPage() {
                   <TableCell>{Number(product.qt_estoque) || '-'}</TableCell>
                   <TableCell>{Number(product.qt_vendas) || '-'}</TableCell>
                   <TableCell>
-                    {Number(product.preco)
-                      ? `R$ ${Number(product.preco).toFixed(2)}`
-                      : product.preco}
+                  {Number(product.preco)
+  ? `R$ ${Number(product.preco).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+  : product.preco}
                   </TableCell>
                   <TableCell>{format(new Date(product.createdAt), 'dd/MM/yyyy HH:mm')}</TableCell>
                   <TableCell>
-                    <Tooltip title="Ver detalhes">
-                      <IconButton onClick={() => navigate(`/product/${product.id}`)}>
+                    <Tooltip title="Ver detalhes" >
+                      <IconButton color='secondary' onClick={() => navigate(`/product/${product.id}`)}>
                         <VisibilityIcon />
                       </IconButton>
                     </Tooltip>
