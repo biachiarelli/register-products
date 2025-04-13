@@ -115,9 +115,9 @@ export default function ProductListPage() {
                   <TableCell>{Number(product.qt_estoque) || '-'}</TableCell>
                   <TableCell>{Number(product.qt_vendas) || '-'}</TableCell>
                   <TableCell>
-                  {Number(product.preco)
-  ? `R$ ${Number(product.preco).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-  : product.preco}
+                  { Number(product.preco)
+                    ? `R$ ${Number(product.preco).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
+                    : product.preco }
                   </TableCell>
                   <TableCell>{format(new Date(product.createdAt), 'dd/MM/yyyy HH:mm')}</TableCell>
                   <TableCell>
