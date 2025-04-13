@@ -7,9 +7,21 @@
     padding:  8px 24px;
     justify-content: end;
 
-    &-text {
+    &-user {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    &-user__text {
         font-size: 16px;
         color: $gray-500;
+    }
+
+    &-image {
+        border-radius: 100%;
+        border: 1px solid $gray-300;
     }
     
 }
