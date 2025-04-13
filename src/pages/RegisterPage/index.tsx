@@ -160,7 +160,7 @@ export default function RegisterPage() {
                   .catch(() => { 
                     setSnackbar({
                       open: true,
-                      type: '',
+                      type: 'error',
                       message: 'Ocorreu um erro cadastrar o usuário',
                     })
                   });

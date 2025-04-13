@@ -16,5 +16,18 @@
         }
 
     }
+
+    &-content {
+        max-width: 800px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 24px;
+
+        @include max-md {
+            grid-template-columns: 1fr;
+
+        }
+
+    }
     
 }
